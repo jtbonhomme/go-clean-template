@@ -4,6 +4,7 @@ GIT_TAG      ?= $(shell git tag --points-at HEAD)
 DIST_TYPE    ?= snapshot
 BRANCH       ?= $(shell git rev-parse --abbrev-ref HEAD)
 REPO         ?= $(shell echo $(JOB_NAME) | cut -d/ -f2)
+DATE         ?= $(shell date -u +%FT%T%z)
 
 PROJECT_NAME := go-clean-template
 BINARY_NAME  := app
@@ -70,9 +71,14 @@ clean: ; $(info $(M) Cleaning project…) @ ## Build the main program.
 	rm -f profile*.png
 	rm -f profile.prof
 	rm -f coverage.out cover.xml cover.html
+	rm -f $(BINARY_NAME)
 
 build: ; $(info $(M) Building program executable…) @ ## Build the main program.
-	$(GO) build -o $(BINARY_NAME) $(CMD)/main.go
+	$(GO) build -o $(BINARY_NAME) \
+		-ldflags "-X github.com/jtbonhomme/go-clean-template/internal/version.Tag=$(IMAGES_TAG) \
+		-X github.com/jtbonhomme/go-clean-template/internal/version.GitCommit=$(GIT_COMMIT) \
+		-X github.com/jtbonhomme/go-clean-template/internal/version.BuildTime=$(DATE)" \
+		$(CMD)/main.go
 
 
 cover: ; $(info $(M) Testing with code coverage…) @  test ## Measure the test coverage.

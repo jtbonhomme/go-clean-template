@@ -2,10 +2,11 @@ package server
 
 import (
 	"context"
-	"io"
+	"encoding/json"
 	"net/http"
 	"time"
 
+	"github.com/jtbonhomme/go-clean-template/internal/version"
 	"github.com/jtbonhomme/go-clean-template/pkg/logger"
 )
 
@@ -28,15 +29,8 @@ type Server struct {
 
 // New -.
 func New(log *logger.Logger, opts ...Option) (*Server, error) {
-	h1 := func(w http.ResponseWriter, _ *http.Request) {
-		io.WriteString(w, "Hello from a HandleFunc #1!\n")
-	}
-	h2 := func(w http.ResponseWriter, _ *http.Request) {
-		io.WriteString(w, "Hello from a HandleFunc #2!\n")
-	}
-
-	http.HandleFunc("/", h1)
-	http.HandleFunc("/endpoint", h2)
+	// handlers
+	http.HandleFunc("/version", VersionHandler)
 
 	httpServer := &http.Server{
 		ReadTimeout:  _defaultReadTimeout,
@@ -80,4 +74,48 @@ func (s *Server) Shutdown() error {
 	defer cancel()
 
 	return s.server.Shutdown(ctx)
+}
+
+// Version is an object that describe the current application version.
+// swagger:response version
+type Version struct {
+	// in: body
+
+	// The current git commit (short format)
+	//
+	// Required: true
+	GitCommit string `json:"gitCommit"`
+	// The current git tag (i exist).
+	//
+	// Required: true
+	Tag string `json:"tag"`
+	// The build time.
+	//
+	// Required: true
+	Buildtime string `json:"buildTime"`
+}
+
+// swagger:route GET /version version getVersionBook
+//
+// Provides application version information.
+//
+// This endpoint returns some versioning information.
+//
+//     Produces:
+//         - application/json
+//
+//     Schemes: http
+//
+//     Deprecated: false
+//
+//     Responses:
+//         200: version
+func VersionHandler(w http.ResponseWriter, _ *http.Request) {
+	version := Version{
+		Buildtime: version.BuildTime,
+		GitCommit: version.GitCommit,
+		Tag:       version.Tag,
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(version)
 }
