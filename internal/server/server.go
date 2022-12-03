@@ -1,36 +1,51 @@
-// Package httpserver implements HTTP server.
-package httpserver
+package server
 
 import (
 	"context"
+	"io"
 	"net/http"
 	"time"
+
+	"github.com/jtbonhomme/go-clean-template/pkg/logger"
 )
 
 const (
 	_defaultReadTimeout     = 5 * time.Second
 	_defaultWriteTimeout    = 5 * time.Second
-	_defaultAddr            = ":80"
+	_defaultAddr            = ":8080"
 	_defaultShutdownTimeout = 3 * time.Second
 )
 
 // Server -.
 type Server struct {
+	log             *logger.Logger
+	addr            string
 	server          *http.Server
 	notify          chan error
+	port            int
 	shutdownTimeout time.Duration
 }
 
 // New -.
-func New(handler http.Handler, opts ...Option) *Server {
+func New(log *logger.Logger, opts ...Option) (*Server, error) {
+	h1 := func(w http.ResponseWriter, _ *http.Request) {
+		io.WriteString(w, "Hello from a HandleFunc #1!\n")
+	}
+	h2 := func(w http.ResponseWriter, _ *http.Request) {
+		io.WriteString(w, "Hello from a HandleFunc #2!\n")
+	}
+
+	http.HandleFunc("/", h1)
+	http.HandleFunc("/endpoint", h2)
+
 	httpServer := &http.Server{
-		Handler:      handler,
 		ReadTimeout:  _defaultReadTimeout,
 		WriteTimeout: _defaultWriteTimeout,
 		Addr:         _defaultAddr,
 	}
 
 	s := &Server{
+		log:             log,
 		server:          httpServer,
 		notify:          make(chan error, 1),
 		shutdownTimeout: _defaultShutdownTimeout,
@@ -43,7 +58,7 @@ func New(handler http.Handler, opts ...Option) *Server {
 
 	s.start()
 
-	return s
+	return s, nil
 }
 
 func (s *Server) start() {
@@ -51,6 +66,7 @@ func (s *Server) start() {
 		s.notify <- s.server.ListenAndServe()
 		close(s.notify)
 	}()
+	s.log.Info("server started on %s", s.server.Addr)
 }
 
 // Notify -.

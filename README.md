@@ -1,30 +1,18 @@
 ![Go Clean Template](docs/img/logo.svg)
 
 # Go Clean template
-[🇨🇳中文](README_CN.md)
-
 Clean Architecture template for Golang services
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/evrone/go-clean-template)](https://goreportcard.com/report/github.com/evrone/go-clean-template)
-[![License](https://img.shields.io/github/license/evrone/go-clean-template.svg)](https://github.com/evrone/go-clean-template/blob/master/LICENSE)
-[![Release](https://img.shields.io/github/v/release/evrone/go-clean-template.svg)](https://github.com/evrone/go-clean-template/releases/)
-[![codecov](https://codecov.io/gh/evrone/go-clean-template/branch/master/graph/badge.svg?token=XE3E0X3EVQ)](https://codecov.io/gh/evrone/go-clean-template)
+[![Go Report Card](https://goreportcard.com/badge/github.com/jtbonhomme/go-clean-template)](https://goreportcard.com/report/github.com/jtbonhomme/go-clean-template)
+[![License](https://img.shields.io/github/license/jtbonhomme/go-clean-template.svg)](https://github.com/jtbonhomme/go-clean-template/blob/master/LICENSE)
+[![Release](https://img.shields.io/github/v/release/jtbonhomme/go-clean-template.svg)](https://github.com/jtbonhomme/go-clean-template/releases/)
+[![codecov](https://codecov.io/gh/jtbonhomme/go-clean-template/branch/master/graph/badge.svg?token=XE3E0X3EVQ)](https://codecov.io/gh/jtbonhomme/go-clean-template)
 
 ## Overview
-The purpose of the template is to show:
-- how to organize a project and prevent it from turning into spaghetti code
-- where to store business logic so that it remains independent, clean, and extensible
-- how not to lose control when a microservice grows
-
-Using the principles of Robert Martin (aka Uncle Bob).
-
-[Go-clean-template](https://evrone.com/go-clean-template?utm_source=github&utm_campaign=go-clean-template) is created & supported by [Evrone](https://evrone.com/?utm_source=github&utm_campaign=go-clean-template).
-
-## Content
-- [Quick start](#quick-start)
-- [Project structure](#project-structure)
-- [Dependency Injection](#dependency-injection)
-- [Clean Architecture](#clean-architecture)
+The purpose of the template is to help you to bootstrap your go projects:
+- well organized repository, to prevent it from turning into spaghetti code
+- separated business logic, so that it remains independent, clean, and extensible
+- basic plumbery for release, lint, dockerization, ...
 
 ## Quick start
 Local development:
@@ -176,111 +164,6 @@ It will also allow us to do auto-generation of mocks (for example with [mockery]
 
 > We are not tied to specific implementations in order to always be able to change one component to another.
 > If the new component implements the interface, nothing needs to be changed in the business logic.
-
-## Clean Architecture
-### Key idea
-Programmers realize the optimal architecture for an application after most of the code has been written.
-
-> A good architecture allows decisions to be delayed to as late as possible.
-
-### The main principle
-Dependency Inversion (the same one from SOLID) is the principle of dependency inversion.
-The direction of dependencies goes from the outer layer to the inner layer.
-Due to this, business logic and entities remain independent from other parts of the system.
-
-So, the application is divided into 2 layers, internal and external:
-1. **Business logic** (Go standard library).
-2. **Tools** (databases, servers, message brokers, any other packages and frameworks).
-
-![Clean Architecture](docs/img/layers-1.png)
-
-**The inner layer** with business logic should be clean. It should:
-- Not have package imports from the outer layer.
-- Use only the capabilities of the standard library.
-- Make calls to the outer layer through the interface (!).
-
-The business logic doesn't know anything about Postgres or a specific web API.
-Business logic has an interface for working with an _abstract_ database or _abstract_ web API.
-
-**The outer layer** has other limitations:
-- All components of this layer are unaware of each other's existence. How to call another from one tool? Not directly, only through the inner layer of business logic.
-- All calls to the inner layer are made through the interface (!).
-- Data is transferred in a format that is convenient for business logic (`internal/entity`).
-
-For example, you need to access the database from HTTP (controller).
-Both HTTP and database are in the outer layer, which means they know nothing about each other.
-The communication between them is carried out through `usecase` (business logic):
-
-```
-    HTTP > usecase
-           usecase > repository (Postgres)
-           usecase < repository (Postgres)
-    HTTP < usecase
-```
-The symbols > and < show the intersection of layer boundaries through Interfaces.
-The same is shown in the picture:
-
-![Example](docs/img/example-http-db.png)
-
-Or more complex business logic:
-```
-    HTTP > usecase
-           usecase > repository
-           usecase < repository
-           usecase > webapi
-           usecase < webapi
-           usecase > RPC
-           usecase < RPC
-           usecase > repository
-           usecase < repository
-    HTTP < usecase
-```
-
-### Layers
-![Example](docs/img/layers-2.png)
-
-### Clean Architecture Terminology
-- **Entities** are structures that business logic operates on.
-  They are located in the `internal/entity` folder.
-  In MVC terms, entities are models.
-  
-- **Use Cases** is business logic located in `internal/usecase`.
-
-The layer with which business logic directly interacts is usually called the _infrastructure_ layer.
-These can be repositories `internal/usecase/repo`, external webapi `internal/usecase/webapi`, any pkg, and other microservices.
-In the template, the _infrastructure_ packages are located inside `internal/usecase`.
-
-You can choose how to call the entry points as you wish. The options are:
-- controller (in our case)
-- delivery
-- transport
-- gateways
-- entrypoints
-- primary
-- input
-
-### Additional layers
-The classic version of [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) was designed for building large monolithic applications and has 4 layers.
-
-In the original version, the outer layer is divided into two more, which also have an inversion of dependencies
-to each other (directed inward) and communicate through interfaces.
-
-The inner layer is also divided into two (with separation of interfaces), in the case of complex logic.
-
-_______________________________
-
-Complex tools can be divided into additional layers.
-However, you should add layers only if really necessary.
-
-### Alternative approaches
-In addition to Clean architecture, _Onion architecture_ and _Hexagonal_ (_Ports and adapters_) are similar to it.
-Both are based on the principle of Dependency Inversion.
-_Ports and adapters_ are very close to _Clean Architecture_, the differences are mainly in terminology.
-
-
-## Similar projects
-- [https://github.com/bxcodec/go-clean-arch](https://github.com/bxcodec/go-clean-arch)
-- [https://github.com/zhashkevych/courses-backend](https://github.com/zhashkevych/courses-backend)
 
 ## Useful links
 - [The Clean Architecture article](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)

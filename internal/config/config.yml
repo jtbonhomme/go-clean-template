@@ -1,0 +1,9 @@
+app:
+  name: 'go-clean-template'
+  version: '1.0.0'
+
+logger:
+  logLevel: 'debug'
+
+server:
+  port: 8080

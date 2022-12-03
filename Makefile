@@ -1,6 +1,3 @@
-include .env.example
-export
-
 # HELP =================================================================================================================
 # This will output the help for each task
 # thanks to https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
@@ -35,7 +32,7 @@ docker-rm-volume: ### remove docker volume
 .PHONY: docker-rm-volume
 
 linter-golangci: ### check by golangci linter
-	golangci-lint run
+	golangci-lint -v --deadline 100s --skip-dirs docs run ./...
 .PHONY: linter-golangci
 
 linter-hadolint: ### check by hadolint linter
