@@ -134,10 +134,13 @@ get_version: version ; $(info $(M) Building version…) @  ## Display version.
 
 release: version ; $(info $(M) Releasing …) @  ## Release the program.
 ifneq ($(GIT_TAG),)
-	$(GORELEASER) release
+	$(GORELEASER) release --parallelism 2 --rm-dist
 else
-	$(GORELEASER) release --snapshot
+	$(GORELEASER) release --snapshot --parallelism 2 --rm-dist
 endif
 
+snapshot: version ; $(info $(M) Releasing …) @  ## Release the program as a snapshot.
+	$(GORELEASER) release --snapshot --parallelism 2 --rm-dist
+
 goreleaser: version ; $(info $(M) Running goreleaser…) @ ## Run go releaser.
-	$(GORELEASER) --parallelism 2
+	$(GORELEASER) --parallelism 2 --rm-dist

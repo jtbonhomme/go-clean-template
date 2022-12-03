@@ -21,9 +21,9 @@ COPY . /app
 WORKDIR /app
 
 RUN CGO_ENABLED=0 go build -o /bin/app \
-  -ldflags "-X github.com/jtbonhomme/go-clean-template/internal/version.Tag=$(git describe --tags --match '[0-9]*\.[0-9]*\.[0-9]*' 2> /dev/null || echo 'no-tag') \
-  -X github.com/jtbonhomme/go-clean-template/internal/version.GitCommit=$(git rev-parse --short HEAD) \
-  -X github.com/jtbonhomme/go-clean-template/internal/version.BuildTime=$(date -u +%FT%T%z)" \
+  -ldflags "-X github.com/jtbonhomme/go-template/internal/version.Tag=$(git describe --tags --match '[0-9]*\.[0-9]*\.[0-9]*' 2> /dev/null || echo 'no-tag') \
+  -X github.com/jtbonhomme/go-template/internal/version.GitCommit=$(git rev-parse --short HEAD) \
+  -X github.com/jtbonhomme/go-template/internal/version.BuildTime=$(date -u +%FT%T%z)" \
   ./cmd/app
 
 ###############################################################################

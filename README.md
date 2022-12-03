@@ -2,10 +2,10 @@
 Clean Architecture template for Golang services
 
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/jtbonhomme/go-clean-template)](https://goreportcard.com/report/github.com/jtbonhomme/go-clean-template)
-[![License](https://img.shields.io/github/license/jtbonhomme/go-clean-template.svg)](https://github.com/jtbonhomme/go-clean-template/blob/master/LICENSE)
-[![Release](https://img.shields.io/github/v/release/jtbonhomme/go-clean-template.svg)](https://github.com/jtbonhomme/go-clean-template/releases/)
-[![codecov](https://codecov.io/gh/jtbonhomme/go-clean-template/branch/master/graph/badge.svg?token=XE3E0X3EVQ)](https://codecov.io/gh/jtbonhomme/go-clean-template)
+[![Go Report Card](https://goreportcard.com/badge/github.com/jtbonhomme/go-template)](https://goreportcard.com/report/github.com/jtbonhomme/go-template)
+[![License](https://img.shields.io/github/license/jtbonhomme/go-template.svg)](https://github.com/jtbonhomme/go-template/blob/master/LICENSE)
+[![Release](https://img.shields.io/github/v/release/jtbonhomme/go-template.svg)](https://github.com/jtbonhomme/go-template/releases/)
+[![codecov](https://codecov.io/gh/jtbonhomme/go-template/branch/master/graph/badge.svg?token=XE3E0X3EVQ)](https://codecov.io/gh/jtbonhomme/go-template)
 
 ## Overview
 The purpose of the template is to help you to bootstrap your go projects:
@@ -57,5 +57,5 @@ Package that exposes a logging interface to be used in all the project. It relie
 Dummy demonstration http server.
 
 ## Useful links
-- [The Clean Architecture article](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+- [The Clean Architecture article](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-architecture.html)
 - [Twelve factors](https://12factor.net/ru/)
