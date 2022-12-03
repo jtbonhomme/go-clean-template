@@ -66,7 +66,7 @@ func (s *Server) start() {
 		s.notify <- s.server.ListenAndServe()
 		close(s.notify)
 	}()
-	s.log.Info("server started on %s", s.server.Addr)
+	s.log.Info("server > start > listen on %s", s.server.Addr)
 }
 
 // Notify -.

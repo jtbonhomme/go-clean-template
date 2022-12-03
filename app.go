@@ -14,11 +14,13 @@ import (
 
 // Run creates objects via constructors.
 func Run(cfg *config.Config) {
-	l := logger.New(cfg.Log.Level)
+	log := logger.New(cfg.Log.Level)
 
-	srv, err := server.New(l, server.Port(cfg.Server.Port))
+	log.Info("app - Run - %s - %s", cfg.App.Name, cfg.App.Version)
+
+	srv, err := server.New(log, server.Port(cfg.Server.Port))
 	if err != nil {
-		l.Fatal(fmt.Errorf("app - Run - postgres.New: %w", err))
+		log.Fatal(fmt.Errorf("app - Run - postgres.New: %w", err))
 	}
 
 	// Waiting signal
@@ -27,15 +29,15 @@ func Run(cfg *config.Config) {
 
 	select {
 	case s := <-interrupt:
-		l.Info("app - Run - signal: " + s.String())
+		log.Info("app - Run - signal: " + s.String())
 	case err = <-srv.Notify():
-		l.Error(fmt.Errorf("app - Run - srv.Notify: %w", err))
+		log.Error(fmt.Errorf("app - Run - srv.Notify: %w", err))
 	}
 
 	// Shutdown
 	err = srv.Shutdown()
 	if err != nil {
-		l.Error(fmt.Errorf("app - Run - srv.Shutdown: %w", err))
+		log.Error(fmt.Errorf("app - Run - srv.Shutdown: %w", err))
 	}
-	l.Info("all servers are shut down, exiting")
+	log.Info("all servers are shut down, exiting")
 }

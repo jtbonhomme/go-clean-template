@@ -3,7 +3,7 @@ app:
   version: '1.0.0'
 
 logger:
-  logLevel: 'debug'
+  logLevel: 'info'
 
 server:
   port: 8080
