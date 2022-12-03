@@ -1,6 +1,5 @@
 app:
   name: 'go-template'
-  version: '1.0.0'
 
 logger:
   logLevel: 'info'

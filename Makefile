@@ -1,4 +1,4 @@
-IMAGES_TAG   = ${shell git describe --tags --match '[0-9]*\.[0-9]*\.[0-9]*' 2> /dev/null || echo 'latest'}
+IMAGES_TAG   = ${shell git describe --tags --match 'v[0-9]*\.[0-9]*\.[0-9]*' 2> /dev/null || echo 'latest'}
 GIT_COMMIT   ?= $(shell git rev-parse HEAD)
 GIT_TAG      ?= $(shell git tag --points-at HEAD)
 DIST_TYPE    ?= snapshot
@@ -24,8 +24,9 @@ GOOS		 ?= $(shell echo $OS | tr '[:upper:]' '[:lower:]')
 GOARCH		 ?= amd64
 DOCKER		 ?= docker
 
-BUILD_CONSTS = -X $(PKG)/cmd.version=$(VERSION) -X $(PKG)/cmd.commit=$(GIT_COMMIT)
-BUILD_OPTS   = -ldflags="$(BUILD_CONSTS) -s -w" -gcflags="-trimpath=$(GOPATH)/src"
+BUILD_OPTS   = -ldflags "-X $(PKG_ORG)/internal/version.Tag=$(IMAGES_TAG) \
+	-X $(PKG_ORG)/internal/version.GitCommit=$(GIT_COMMIT) \
+	-X $(PKG_ORG)/internal/version.BuildTime=$(DATE)"
 
 # HELP =================================================================================================================
 # This will output the help for each task
@@ -75,9 +76,7 @@ clean: ; $(info $(M) Cleaning project…) @ ## Build the main program.
 
 build: ; $(info $(M) Building program executable…) @ ## Build the main program.
 	$(GO) build -o $(BINARY_NAME) \
-		-ldflags "-X $(PKG_ORG)/internal/version.Tag=$(IMAGES_TAG) \
-		-X $(PKG_ORG)/internal/version.GitCommit=$(GIT_COMMIT) \
-		-X $(PKG_ORG)/internal/version.BuildTime=$(DATE)" \
+		$(BUILD_OPTS) \
 		$(CMD)/main.go
 
 deps: ; $(info $(M) Testing with code coverage…) @  test ## Measure the test coverage.
@@ -135,11 +134,9 @@ get_version: version ; $(info $(M) Building version…) @  ## Display version.
 
 release: version ; $(info $(M) Releasing …) @  ## Release the program.
 ifneq ($(GIT_TAG),)
-	goreleaser release
+	$(GORELEASER) release
 else
-	goreleaser release --snapshot
-	$(DOCKER) push $(HARBOR)/$(DOCKER_PROJECT_NAME):$(VERSION_FILE)
-	$(DOCKER) push $(REGISTRY)/$(DOCKER_PROJECT_NAME):$(VERSION_FILE)
+	$(GORELEASER) release --snapshot
 endif
 
 goreleaser: version ; $(info $(M) Running goreleaser…) @ ## Run go releaser.

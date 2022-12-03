@@ -9,6 +9,7 @@ import (
 
 	"github.com/jtbonhomme/go-template/internal/config"
 	"github.com/jtbonhomme/go-template/internal/server"
+	"github.com/jtbonhomme/go-template/internal/version"
 	"github.com/jtbonhomme/go-template/pkg/logger"
 )
 
@@ -16,7 +17,7 @@ import (
 func Run(cfg *config.Config) {
 	log := logger.New(cfg.Log.Level)
 
-	log.Info("app - Run - %s - %s", cfg.App.Name, cfg.App.Version)
+	log.Info("app - Run - %s - %s (%s)", cfg.App.Name, version.Tag, version.BuildTime)
 
 	srv, err := server.New(log, server.Port(cfg.Server.Port))
 	if err != nil {
