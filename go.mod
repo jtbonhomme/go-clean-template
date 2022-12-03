@@ -1,4 +1,4 @@
-module github.com/jtbonhomme/go-clean-template
+module github.com/jtbonhomme/go-template
 
 go 1.19
 

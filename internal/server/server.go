@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/jtbonhomme/go-clean-template/internal/version"
-	"github.com/jtbonhomme/go-clean-template/pkg/logger"
+	"github.com/jtbonhomme/go-template/internal/version"
+	"github.com/jtbonhomme/go-template/pkg/logger"
 )
 
 const (

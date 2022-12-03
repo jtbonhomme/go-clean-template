@@ -6,11 +6,11 @@ BRANCH       ?= $(shell git rev-parse --abbrev-ref HEAD)
 REPO         ?= $(shell echo $(JOB_NAME) | cut -d/ -f2)
 DATE         ?= $(shell date -u +%FT%T%z)
 
-PROJECT_NAME := go-clean-template
+PROJECT_NAME := go-template
 BINARY_NAME  := app
-PKG_ORG      := jtbonhomme/$(PROJECT_NAME)
+PKG_ORG      := github.com/jtbonhomme/$(PROJECT_NAME)
 CMD          := cmd/$(BINARY_NAME)
-PKG 		 := github.com/$(PKG_ORG)/$(CMD)
+PKG 		 := $(PKG_ORG)/$(CMD)
 PKG_LIST 	 := $(shell go list ${PKG}/...)
 GO_FILES 	 := $(shell find . -name '*.go' -not -path "./vendor/*" | grep -v _test.go)
 
@@ -50,10 +50,10 @@ debug: ; $(info $(M) Runing with debug logs…) @ ### run program with log level
 	LOG_LEVEL=debug $(GO) run $(PKG)
 .PHONY: debug
 
-tidy: ; $(info $(M) Cleaning ups dependencies…) @ ## Clean go modules.
+tidy: ; $(info $(M) Cleaning up modules…) @ ## Clean go modules.
 	GOPRIVATE=$(PKG)/* $(GO) mod tidy
 
-deps: ; $(info $(M) Fetching dependencies…) @ ## Download go modules.
+mod: ; $(info $(M) Fetching golang modules…) @ ## Download go modules.
 	GOPRIVATE=$(PKG)/* $(GO) mod download
 
 fmt: ; $(info $(M) Formatting golang code…) @ ## Format go code.
@@ -75,16 +75,19 @@ clean: ; $(info $(M) Cleaning project…) @ ## Build the main program.
 
 build: ; $(info $(M) Building program executable…) @ ## Build the main program.
 	$(GO) build -o $(BINARY_NAME) \
-		-ldflags "-X github.com/jtbonhomme/go-clean-template/internal/version.Tag=$(IMAGES_TAG) \
-		-X github.com/jtbonhomme/go-clean-template/internal/version.GitCommit=$(GIT_COMMIT) \
-		-X github.com/jtbonhomme/go-clean-template/internal/version.BuildTime=$(DATE)" \
+		-ldflags "-X $(PKG_ORG)/internal/version.Tag=$(IMAGES_TAG) \
+		-X $(PKG_ORG)/internal/version.GitCommit=$(GIT_COMMIT) \
+		-X $(PKG_ORG)/internal/version.BuildTime=$(DATE)" \
 		$(CMD)/main.go
 
-
-cover: ; $(info $(M) Testing with code coverage…) @  test ## Measure the test coverage.
+deps: ; $(info $(M) Testing with code coverage…) @  test ## Measure the test coverage.
+	which golangci-lint || (go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.50.1)
+	which goreleaser || (go install github.com/goreleaser/goreleaser@latest)
 	which gocov || (go get -u github.com/axw/gocov/gocov)
 	which gocov-xml || (go get -u github.com/AlekSi/gocov-xml)
 	which gocov-html || (go get -u github.com/matm/gocov-html)
+
+cover: ; $(info $(M) Testing with code coverage…) @  test ## Measure the test coverage.
 	gocov convert coverage.out | gocov-xml > cover.xml
 	gocov convert coverage.out | gocov-html > cover.html
 	open cover.html

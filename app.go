@@ -7,9 +7,9 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/jtbonhomme/go-clean-template/internal/config"
-	"github.com/jtbonhomme/go-clean-template/internal/server"
-	"github.com/jtbonhomme/go-clean-template/pkg/logger"
+	"github.com/jtbonhomme/go-template/internal/config"
+	"github.com/jtbonhomme/go-template/internal/server"
+	"github.com/jtbonhomme/go-template/pkg/logger"
 )
 
 // Run creates objects via constructors.
