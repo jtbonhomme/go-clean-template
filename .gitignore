@@ -16,3 +16,7 @@ profile.prof
 *.out
 cover.html
 cover.xml
+
+## Builds
+app
+dist
