@@ -3,7 +3,7 @@ module github.com/jtbonhomme/go-template
 go 1.19
 
 require (
-	github.com/ilyakaznacheev/cleanenv v1.4.1
+	github.com/ilyakaznacheev/cleanenv v1.4.2
 	github.com/rs/zerolog v1.28.0
 )
 
