@@ -1,0 +1,80 @@
+name: "Tests"
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
+  push:
+    branches:
+    - 'master'
+
+jobs:
+  master-tests:
+    runs-on: ubuntu-latest
+    outputs:
+      coverage: ${{ steps.make_test_master.outputs.coverage }}
+    steps:
+      - name: Setup Go 1.19
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.19.x
+
+      - name: Checkout master
+        uses: actions/checkout@v3
+        with:
+          ref: 'refs/heads/master'
+
+      - name: Make tests on master
+        id: make_test_master
+        run: |
+          make test
+          coverage=`go tool cover -func=coverage.out | grep total | grep -Eo '[0-9]+\.[0-9]+'`
+          echo "coverage=$coverage"
+          echo "coverage=$coverage" >> $GITHUB_OUTPUT
+
+  branch-tests:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    outputs:
+      coverage: ${{ steps.make_test_branch.outputs.coverage }}
+    steps:
+      - name: Setup Go 1.19
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.19.x
+
+      - name: Checkout RP branch
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }} # Checkout pull request HEAD commit instead of merge commit
+
+      - name: Make tests on branch
+        id: make_test_branch
+        run: |
+          make test
+          coverage=`go tool cover -func=coverage.out | grep total | grep -Eo '[0-9]+\.[0-9]+'`
+          echo "coverage=$coverage"
+          echo "coverage=$coverage" >> $GITHUB_OUTPUT
+
+      - name: Coverage Reporter on Pull Request
+        uses: romeovs/lcov-reporter-action@v0.2.16
+        with:
+          lcov-file: ./coverage.lcov
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  checks:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    name: Checks coverage increase
+    needs: [master-tests, branch-tests] 
+    steps:
+      - name: Check coverage progress
+        run: |
+          set -x
+          master_coverage=${{needs.master-tests.outputs.coverage}}
+          branch_coverage=${{needs.branch-tests.outputs.coverage}}
+          echo "Main coverage: $master_coverage"
+          echo "Branch coverage: $branch_coverage"
+          (( $(echo "$branch_coverage >= $master_coverage" | bc -l) )) && exit 0 || exit 1
