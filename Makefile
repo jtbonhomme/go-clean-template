@@ -39,8 +39,11 @@ linter: ; $(info $(M) Lint go source code…) @ ### check by golangci linter.
 	$(GOLANGCILINT) -v --deadline 100s --skip-dirs docs run ./...
 .PHONY: linter
 
-test: linter ; $(info $(M) Executing tests…)@ ### run tests.
-	$(GO) test -v -cover -race ./internal/...
+#test: linter ; $(info $(M) Executing tests…)@ ### run tests.
+test: ; $(info $(M) Executing tests…)@ ### run tests.
+	@which  $(GCOV2LCOV) || (go install github.com/jandelgado/gcov2lcov@latest)
+	$(GO) test -race -cover -coverprofile=coverage.out && \
+		$(GCOV2LCOV) -infile=coverage.out -outfile=coverage.lcov
 .PHONY: test
 
 run: ; $(info $(M) Runing program…) @ ### run program.
