@@ -1,6 +1,6 @@
 # Go Clean template
-Clean Architecture template for Golang services
 
+Clean Architecture template for Golang services
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/jtbonhomme/go-template)](https://goreportcard.com/report/github.com/jtbonhomme/go-template)
 [![License](https://img.shields.io/github/license/jtbonhomme/go-template.svg)](https://github.com/jtbonhomme/go-template/blob/master/LICENSE)
