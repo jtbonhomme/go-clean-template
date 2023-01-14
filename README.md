@@ -49,7 +49,7 @@ It does not have many stars on GitHub, but is simple and meets all the requireme
 
 Reading the config from yaml contradicts the ideology of 12 factors, but in practice, it is more convenient than
 reading the entire config from ENV.
-It is assumed that default values are in yaml, and security-sensitive variables are defined in ENV. Consider using a configuration server like Consul.
+It is assumed that default values are in yaml, and security-sensitive variables are defined in ENV.
 
 ### `pkg/logger`
 Package that exposes a logging interface to be used in all the project. It relies on [zerolog](https://github.com/rs/zerolog)
