@@ -6,6 +6,7 @@ Clean Architecture template for Golang services
 [![License](https://img.shields.io/github/license/jtbonhomme/go-template.svg)](https://github.com/jtbonhomme/go-template/blob/master/LICENSE)
 [![Release](https://img.shields.io/github/v/release/jtbonhomme/go-template.svg)](https://github.com/jtbonhomme/go-template/releases/)
 [![codecov](https://codecov.io/gh/jtbonhomme/go-template/branch/master/graph/badge.svg?token=XE3E0X3EVQ)](https://codecov.io/gh/jtbonhomme/go-template)
+[![Tests](https://github.com/jtbonhomme/go-template/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/jtbonhomme/go-template/actions/workflows/tests.yml)
 
 ## Overview
 The purpose of the template is to help you to bootstrap your go projects:
