@@ -1,0 +1,75 @@
+name: Release with Changelog
+on:
+  push:
+    branches:
+    - 'master'
+  pull_request:
+    types: [closed]
+
+jobs:
+  release-note:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Create tag"
+        uses: K-Phoen/semver-release-action@master
+        if: github.event.pull_request.merged
+        with:
+          release_branch: master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Checkout"
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: "Build Changelog"
+        id: changelog_release
+        uses: mikepenz/release-changelog-builder-action@v3.6.0
+        if: github.event.pull_request.merged
+        with:
+          configurationJson: |
+            {
+                "categories": [
+                    {
+                        "title": "## 🚀 Features",
+                        "labels": ["feat"]
+                    },
+                    {
+                        "title": "## 🐛 Fixes",
+                        "labels": ["fix"]
+                    },
+                    {
+                        "title": "## 🧪 Tests",
+                        "labels": ["test"]
+                    },
+                    {
+                        "title": "## 💬 Infra",
+                        "labels": ["chore"]
+                    },
+                    {
+                        "title": "## 📦 Dependencies",
+                        "labels": ["dep"]
+                    },
+                    {
+                        "title": "## 📦 Uncategorized",
+                        "labels": []
+                    }
+                ],
+                "max_pull_requests": 200,
+                "max_back_track_time_days": 200
+            }
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Dump changelog
+        run: echo ${{steps.changelog_release.outputs.changelog}}
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          body: ${{steps.changelog_release.outputs.changelog}}
+          prerelease: ${{ contains(github.ref, '-rc') || contains(github.ref, '-b') || contains(github.ref, '-a') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
