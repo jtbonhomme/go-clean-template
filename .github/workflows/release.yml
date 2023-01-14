@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Create tag"
+        id: create-tag
         uses: K-Phoen/semver-release-action@master
         with:
           release_branch: master
@@ -16,6 +17,8 @@ jobs:
           tag_format: "v%major%.%minor%.%patch%"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: echo "created tag ${{ steps.create-tag.outputs.tag }}"
 
       - name: "Checkout"
         uses: actions/checkout@v3
