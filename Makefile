@@ -19,6 +19,7 @@ GOLANGCILINT := golangci-lint
 GORELEASER	 := goreleaser
 GOFMT		 := gofmt
 GOIMPORTS	 := goimports
+GCOV2LCOV    := gcov2lcov
 OS			 := $(shell uname -s)
 GOOS		 ?= $(shell echo $OS | tr '[:upper:]' '[:lower:]')
 GOARCH		 ?= amd64
