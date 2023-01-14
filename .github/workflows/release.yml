@@ -3,8 +3,6 @@ on:
   push:
     branches:
     - 'master'
-  pull_request:
-    types: [closed]
 
 jobs:
   release-note:
@@ -12,9 +10,10 @@ jobs:
     steps:
       - name: "Create tag"
         uses: K-Phoen/semver-release-action@master
-        if: github.event.pull_request.merged
         with:
           release_branch: master
+          release_strategy: tag
+          tag_format: "v%major%.%minor%.%patch%"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -26,7 +25,6 @@ jobs:
       - name: "Build Changelog"
         id: changelog_release
         uses: mikepenz/release-changelog-builder-action@v3.6.0
-        if: github.event.pull_request.merged
         with:
           configurationJson: |
             {
