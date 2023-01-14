@@ -1,0 +1,83 @@
+name: "Check PRs"
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
+
+jobs:
+  debug:
+    name: Display info
+    runs-on: ubuntu-latest
+    steps:
+      - name: echo env variables
+        id: echo-env-variables
+        run: echo ${{ github.event.pull_request.title }}
+
+  check-pr-semantic:
+    name: Check PR title semantic
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR semantic
+        id: check-pr-semantic
+        uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          # Configure which types are allowed (newline delimited).
+          # Default: https://github.com/commitizen/conventional-commit-types
+          types: |
+            fix
+            feat
+            doc
+            test
+            chore
+
+  check-commit-message:
+    name: Check Commit Message
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get PR Commits
+        id: 'get-pr-commits'
+        uses: tim-actions/get-pr-commits@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - run: echo ${{ steps.get-pr-commits.outputs.commits }}
+      - name: Check Subject Line Length
+        uses: tim-actions/commit-message-checker-with-regex@v0.3.1
+        with:
+          commits: ${{ steps.get-pr-commits.outputs.commits }}
+          pattern: '^.{0,75}(\n.*)*$'
+          error: 'Subject too long (max 75)'
+
+      - name: Check Body Line Length
+        if: ${{ success() || failure() }}
+        uses: tim-actions/commit-message-checker-with-regex@v0.3.1
+        with:
+          commits: ${{ steps.get-pr-commits.outputs.commits }}
+          pattern: '^.+(\n.{0,72})*$'
+          error: 'Body line too long (max 72)'
+
+      #- name: Check Fixes
+      #  if: ${{ success() || failure() }}
+      #  uses: tim-actions/commit-message-checker-with-regex@v0.3.1
+      #  with:
+      #    commits: ${{ steps.get-pr-commits.outputs.commits }}
+      #    pattern: '\s*Fixes\s*:?\s*(#\d+|github\.com\/kata-containers\/[a-z-.]*#\d+)'
+      #    error: 'No "Fixes" found'
+      #    one_pass_all_pass: 'true'
+
+      #- name: Check subsystem
+      #  if: ${{ success() || failure() }}
+      #  uses: tim-actions/commit-message-checker-with-regex@v0.3.1
+      #  with:
+      #    commits: ${{ steps.get-pr-commits.outputs.commits }}
+      #    pattern: '^[\h]*([^:\h\n]+)[\h]*:'
+      #    error: 'Failed to find subsystem in subject'
+
+      - name: PR Title Verify
+        uses: satvik-s/pr-title-check@1.1.0
+        with:
+          pattern: '(fix|feat|chore|docs|style|refactor|perf|test): (?:\w+\b\W*){3,8}$'
