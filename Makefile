@@ -19,6 +19,7 @@ GOLANGCILINT := golangci-lint
 GORELEASER	 := goreleaser
 GOFMT		 := gofmt
 GOIMPORTS	 := goimports
+GCOV2LCOV    := gcov2lcov
 OS			 := $(shell uname -s)
 GOOS		 ?= $(shell echo $OS | tr '[:upper:]' '[:lower:]')
 GOARCH		 ?= amd64
@@ -36,11 +37,14 @@ help: ; $(info $(M) Display makefile targets…) @ ## Display this help screen
 .PHONY: help
 
 linter: ; $(info $(M) Lint go source code…) @ ### check by golangci linter.
+	@which golangci-lint || (go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.50.1)
 	$(GOLANGCILINT) -v --deadline 100s --skip-dirs docs run ./...
 .PHONY: linter
 
 test: linter ; $(info $(M) Executing tests…)@ ### run tests.
-	$(GO) test -v -cover -race ./internal/...
+	@which  $(GCOV2LCOV) || (go install github.com/jandelgado/gcov2lcov@latest)
+	$(GO) test -race -cover -coverprofile=coverage.out && \
+		$(GCOV2LCOV) -infile=coverage.out -outfile=coverage.lcov
 .PHONY: test
 
 run: ; $(info $(M) Runing program…) @ ### run program.
@@ -80,11 +84,12 @@ build: ; $(info $(M) Building program executable…) @ ## Build the main program
 		$(CMD)/main.go
 
 deps: ; $(info $(M) Testing with code coverage…) @  test ## Measure the test coverage.
-	which golangci-lint || (go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.50.1)
-	which goreleaser || (go install github.com/goreleaser/goreleaser@latest)
-	which gocov || (go get -u github.com/axw/gocov/gocov)
-	which gocov-xml || (go get -u github.com/AlekSi/gocov-xml)
-	which gocov-html || (go get -u github.com/matm/gocov-html)
+	@which golangci-lint || (go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.50.1)
+	@which goreleaser || (go install github.com/goreleaser/goreleaser@latest)
+	@which gocov || (go get -u github.com/axw/gocov/gocov)
+	@which gocov-xml || (go get -u github.com/AlekSi/gocov-xml)
+	@which gocov-html || (go get -u github.com/matm/gocov-html)
+	@which  $(GCOV2LCOV) || (go install github.com/jandelgado/gcov2lcov@latest)
 
 cover: ; $(info $(M) Testing with code coverage…) @  test ## Measure the test coverage.
 	gocov convert coverage.out | gocov-xml > cover.xml
