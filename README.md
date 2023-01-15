@@ -5,7 +5,7 @@ Clean Architecture template for Golang services
 [![Go Report Card](https://goreportcard.com/badge/github.com/jtbonhomme/go-template)](https://goreportcard.com/report/github.com/jtbonhomme/go-template)
 [![License](https://img.shields.io/github/license/jtbonhomme/go-template.svg)](https://github.com/jtbonhomme/go-template/blob/master/LICENSE)
 [![Release](https://img.shields.io/github/v/release/jtbonhomme/go-template.svg)](https://github.com/jtbonhomme/go-template/releases/)
-![Code coverage](.badges/test-badge.svg)
+![Code coverage](./.badges/coverage-badge.svg?raw=true)
 [![Tests](https://github.com/jtbonhomme/go-template/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/jtbonhomme/go-template/actions/workflows/tests.yml)
 
 ## Overview
@@ -73,8 +73,8 @@ Dummy demonstration http server.
 
 ### To Do
 
-* [x] Automatic tag + GH release
+* [X] Automatic tag + GH release
 * [ ] Fix auto tag (no actual analyse of PRs)
 * [ ] Fix changelog (fix are uncategorized)
-* [ ] Create and commit SVG badge in master branch
+* [X] Create and commit SVG badge in pushed branch
 * [ ] Pass tests coverage as artifact between test and badge
