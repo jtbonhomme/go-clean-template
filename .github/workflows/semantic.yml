@@ -1,4 +1,4 @@
-name: "Check PRs"
+name: "Check Pull Request"
 on:
   pull_request:
     types:
@@ -8,14 +8,6 @@ on:
       - synchronize
 
 jobs:
-  debug:
-    name: Display info
-    runs-on: ubuntu-latest
-    steps:
-      - name: echo env variables
-        id: echo-env-variables
-        run: echo ${{ github.event.pull_request.title }}
-
   check_pr_semantic:
     name: Check PR title semantic
     runs-on: ubuntu-latest
