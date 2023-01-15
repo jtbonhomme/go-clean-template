@@ -42,14 +42,30 @@ jobs:
 
       - name: Assign label to Pull Request
         id: label
-        uses: action-runner/conventional-labeler@v1
-        with:
-          access_token: ${{ secrets.GITHUB_TOKEN }}
-        #uses: Bhacaz/label-regex@v1
+        #uses: action-runner/conventional-labeler@v1
         #with:
-        #  field: title
-        #  regex: '(fix|feat|chore|doc|docs|style|refactor|perf|test):'
-        #  lowercase: true
-        #  token: ${{ secrets.GH_TOKEN }}
+        #  access_token: ${{ secrets.GITHUB_TOKEN }}
+        uses: Bhacaz/label-regex@v1
+        with:
+          field: title
+          regex: '(fix|feat|chore|doc|docs|style|refactor|perf|test):'
+          lowercase: true
+          token: ${{ secrets.GH_TOKEN }}
       - name: Get the label output
         run: echo "The labels were ${{ steps.label.outputs.labels }}"
+
+      - name: Semantic Release
+        id: semantic_release
+        uses: cycjimmy/semantic-release-action@v3
+        with:
+          dry_run: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Do something when a new release published
+        if: steps.semantic_release.outputs.new_release_published == 'true'
+        run: |
+          echo ${{ steps.semantic_release.outputs.new_release_version }}
+          echo ${{ steps.semantic_release.outputs.new_release_major_version }}
+          echo ${{ steps.semantic_release.outputs.new_release_minor_version }}
+          echo ${{ steps.semantic_release.outputs.new_release_patch_version }}
