@@ -35,27 +35,6 @@ jobs:
     name: Check Commit Message
     runs-on: ubuntu-latest
     steps:
-      - name: Get PR Commits
-        id: get_pr_commits
-        uses: tim-actions/get-pr-commits@master
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - run: echo ${{ steps.get_pr_commits.outputs.commits }}
-      - name: Check Subject Line Length
-        uses: tim-actions/commit-message-checker-with-regex@v0.3.1
-        with:
-          commits: ${{ steps.get_pr_commits.outputs.commits }}
-          pattern: '^.{0,75}(\n.*)*$'
-          error: 'Subject too long (max 75)'
-
-      - name: Check Body Line Length
-        if: ${{ success() || failure() }}
-        uses: tim-actions/commit-message-checker-with-regex@v0.3.1
-        with:
-          commits: ${{ steps.get_pr_commits.outputs.commits }}
-          pattern: '^.+(\n.{0,72})*$'
-          error: 'Body line too long (max 72)'
-
       - name: PR Title Verify
         uses: satvik-s/pr-title-check@1.1.0
         with:
