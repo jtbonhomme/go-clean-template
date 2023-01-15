@@ -23,10 +23,18 @@ jobs:
           WITH_V: true
           VERBOSE: true
 
+      - name: Get Next Version
+        id: ietf_semver
+        uses: ietf-tools/semver-action@v1
+        with:
+          token: ${{ github.token }}
+          branch: main
+
       - run: |
           echo "created anothrNick new_tag ${{ steps.create_version_push_tag.outputs.new_tag }}"
           echo "created anothrNick tag ${{ steps.create_version_push_tag.outputs.tag }}"
           echo "created anothrNick part ${{ steps.create_version_push_tag.outputs.part }}"
+          echo "created IETF next version ${{ steps.ietf_semver.outputs.next }}"
 
       #- name: "Create latest tag"
       #  id: create_latest_tag

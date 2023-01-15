@@ -61,13 +61,17 @@ Dummy demonstration http server.
 - [The Clean Architecture article](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-architecture.html)
 - [Twelve factors](https://12factor.net/ru/)
 
+## CI
 
-## Github Actions
+### Github Actions
 
 * [Code coverage](https://github.com/romeovs/lcov-reporter-action)
 * [Changelog builder](https://github.com/mikepenz/release-changelog-builder-action)
 * [Create GH release](https://github.com/softprops/action-gh-release)
 
-## To Do
+### To Do
 
-* [ ] Automatic versioning + release (https://github.com/softprops/action-gh-release)
+* [x] Automatic tag + GH release
+* [ ] Fix auto tag (no actual analyse of PRs)
+* [ ] Fix changelog (fix are uncategorized)
+* [ ] Create and commit SVG badge in master branch
