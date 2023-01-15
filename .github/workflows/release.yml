@@ -5,10 +5,27 @@ on:
     - 'master'
 
 jobs:
-  release-note:
+  latest:
     runs-on: ubuntu-latest
     steps:
-      - name: "Create tag"
+      - name: "Checkout"
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.61.0 # Don't use @master unless you're happy to test the latest version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+
+      - name: "Create latest tag"
+        id: create_latest_tag
+        uses: rickstaa/action-create-tag@v1
+        with:
+          tag: "latest"
+          message: "Latest release"
+
+      - name: "Create semver tag"
         id: create-tag
         uses: K-Phoen/semver-release-action@master
         with:
@@ -18,7 +35,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - run: echo "created tag ${{ steps.create-tag.outputs.tag }}"
+      - run: echo "created semver tag ${{ steps.create-tag.outputs.tag }}"
+
+  release-note:
+    runs-on: ubuntu-latest
+    steps:
 
       - name: "Checkout"
         uses: actions/checkout@v3
