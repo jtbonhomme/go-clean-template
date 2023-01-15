@@ -24,7 +24,7 @@ jobs:
         id: extract_branch
         shell: bash
         run: |
-          echo github.ref_name ${{ github.ref_name }}
+          echo github.ref_name ${{ github.head_ref }}
           echo GITHUB_REF ${GITHUB_REF}
           echo GITHUB_REF##*/ ${GITHUB_REF##*/}
           echo "branch=${GITHUB_REF#refs/heads/}"
@@ -91,4 +91,4 @@ jobs:
         with:
           force: true
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref_name }}
+          branch: ${{ github.head_ref }}
