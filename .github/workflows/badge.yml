@@ -19,6 +19,8 @@ jobs:
 
       - name: Checkout master
         uses: actions/checkout@v3
+        with:
+          branch: 'test/badge2'
 
       - name: Extract branch name
         id: extract_branch
