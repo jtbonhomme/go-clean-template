@@ -62,9 +62,13 @@ jobs:
           pattern: '(fix|feat|chore|doc|docs|style|refactor|perf|test): (?:\w+\b\W*){2,8}$'
 
       - name: Assign label to Pull Request
-        uses: Bhacaz/label-regex@v1
-        with:
-          field: title
-          regex: '(fix|feat|chore|doc|docs|style|refactor|perf|test):'
-          lowercase: true
-          token: ${{ secrets.GH_TOKEN }}
+        uses: tjgurwara99/label-maker@v0.1.2
+        with: 
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+        #uses: Bhacaz/label-regex@v1
+        #with:
+        #  field: title
+        #  regex: '(fix|feat|chore|doc|docs|style|refactor|perf|test):'
+        #  lowercase: true
+        #  token: ${{ secrets.GH_TOKEN }}
