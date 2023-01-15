@@ -25,12 +25,13 @@ jobs:
           echo "created anothrNick tag ${{ steps.create-version-push-tag.outputs.tag }}"
           echo "created anothrNick part ${{ steps.create-version-push-tag.outputs.part }}"
 
-      - name: "Create latest tag"
-        id: create_latest_tag
-        uses: rickstaa/action-create-tag@v1
-        with:
-          tag: "latest"
-          message: "Latest release"
+      #- name: "Create latest tag"
+      #  id: create_latest_tag
+      #  uses: rickstaa/action-create-tag@v1
+      #  with:
+      #    tag: "latest"
+      #    message: "Latest release"
+      #    force_push_tag: true
 
   release-note:
     runs-on: ubuntu-latest
