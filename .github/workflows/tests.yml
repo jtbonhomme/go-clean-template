@@ -73,8 +73,8 @@ jobs:
       - name: Check coverage progress
         run: |
           set -x
-          master_coverage=${{needs.master-tests.outputs.coverage}}
-          branch_coverage=${{needs.branch-tests.outputs.coverage}}
+          master_coverage=${{ needs.master-tests.outputs.coverage }}
+          branch_coverage=${{ needs.branch-tests.outputs.coverage }}
           echo "Main coverage: $master_coverage"
           echo "Branch coverage: $branch_coverage"
           (( $(echo "$branch_coverage >= $master_coverage" | bc -l) )) && exit 0 || exit 1
