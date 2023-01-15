@@ -5,7 +5,7 @@ Clean Architecture template for Golang services
 [![Go Report Card](https://goreportcard.com/badge/github.com/jtbonhomme/go-template)](https://goreportcard.com/report/github.com/jtbonhomme/go-template)
 [![License](https://img.shields.io/github/license/jtbonhomme/go-template.svg)](https://github.com/jtbonhomme/go-template/blob/master/LICENSE)
 [![Release](https://img.shields.io/github/v/release/jtbonhomme/go-template.svg)](https://github.com/jtbonhomme/go-template/releases/)
-[![codecov](https://codecov.io/gh/jtbonhomme/go-template/branch/master/graph/badge.svg?token=XE3E0X3EVQ)](https://codecov.io/gh/jtbonhomme/go-template)
+![Code coverage](.badges/test-badge.svg)
 [![Tests](https://github.com/jtbonhomme/go-template/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/jtbonhomme/go-template/actions/workflows/tests.yml)
 
 ## Overview
@@ -69,6 +69,7 @@ Dummy demonstration http server.
 * [Code coverage](https://github.com/romeovs/lcov-reporter-action)
 * [Changelog builder](https://github.com/mikepenz/release-changelog-builder-action)
 * [Create GH release](https://github.com/softprops/action-gh-release)
+* [Github Push Action](https://github.com/ad-m/github-push-action)
 
 ### To Do
 
