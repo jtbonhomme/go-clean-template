@@ -16,12 +16,12 @@ jobs:
         id: echo-env-variables
         run: echo ${{ github.event.pull_request.title }}
 
-  check-pr-semantic:
+  check_pr_semantic:
     name: Check PR title semantic
     runs-on: ubuntu-latest
     steps:
       - name: Check PR semantic
-        id: check-pr-semantic
+        id: check_pr_semantic
         uses: amannn/action-semantic-pull-request@v5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -41,15 +41,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Get PR Commits
-        id: 'get-pr-commits'
+        id: get_pr_commits
         uses: tim-actions/get-pr-commits@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      - run: echo ${{ steps.get-pr-commits.outputs.commits }}
+      - run: echo ${{ steps.get_pr_commits.outputs.commits }}
       - name: Check Subject Line Length
         uses: tim-actions/commit-message-checker-with-regex@v0.3.1
         with:
-          commits: ${{ steps.get-pr-commits.outputs.commits }}
+          commits: ${{ steps.get_pr_commits.outputs.commits }}
           pattern: '^.{0,75}(\n.*)*$'
           error: 'Subject too long (max 75)'
 
@@ -57,7 +57,7 @@ jobs:
         if: ${{ success() || failure() }}
         uses: tim-actions/commit-message-checker-with-regex@v0.3.1
         with:
-          commits: ${{ steps.get-pr-commits.outputs.commits }}
+          commits: ${{ steps.get_pr_commits.outputs.commits }}
           pattern: '^.+(\n.{0,72})*$'
           error: 'Body line too long (max 72)'
 
