@@ -15,6 +15,13 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Get Next Version
+        id: ietf_semver
+        uses: ietf-tools/semver-action@v1
+        with:
+          token: ${{ github.token }}
+          branch: main
+
       - name: Bump version and push tag
         id: create_version_push_tag
         uses: anothrNick/github-tag-action@1.61.0 # Don't use @master unless you're happy to test the latest version
@@ -22,13 +29,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
           VERBOSE: true
-
-      - name: Get Next Version
-        id: ietf_semver
-        uses: ietf-tools/semver-action@v1
-        with:
-          token: ${{ github.token }}
-          branch: main
 
       - run: |
           echo "created anothrNick new_tag ${{ steps.create_version_push_tag.outputs.new_tag }}"
