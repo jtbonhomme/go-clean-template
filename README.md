@@ -60,6 +60,7 @@ Dummy demonstration http server.
 ## Useful links
 - [The Clean Architecture article](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-architecture.html)
 - [Twelve factors](https://12factor.net/ru/)
+- [Semantic Versioning](https://semver.org/)
 
 ## CI
 

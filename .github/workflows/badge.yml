@@ -35,3 +35,48 @@ jobs:
           echo "lines=${COVERAGE}" >> "${GITHUB_OUTPUT}"
         env:
           COVERAGE: ${{ steps.make_test_master.outputs.coverage }}
+
+      # Create the directory where badges will be saved, if needed
+      - name: Create destination directory
+        id: create_badge_dir
+        run: |
+          # Generates a GitHub Workflow output named `path` with the badge relative path
+          echo "path=${BADGE_PATH}" >> "${GITHUB_OUTPUT}"
+          # Creates the badge directory by removing the last fragment of the badge relative path ('%/*')
+          mkdir -p "${BADGE_PATH%/*}"
+        env:
+          BADGE_PATH: ".badges/test-badge.svg"
+  
+      # Use the output from the `coverage` step
+      - name: Generate the badge SVG image
+        uses: emibcn/badge-action@v2.0.2
+        id: badge
+        with:
+          label: 'Test coverage'
+          status: ${{ steps.coverage.outputs.lines }}
+          color: 'blue,555,daf'
+          path: ${{ steps.create_badge_dir.outputs.path }}
+  
+      - name: Upload badge as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: badge
+          path: ${{ steps.create_badge_dir.outputs.path }}
+          if-no-files-found: error
+  
+      - name: Commit badge
+        continue-on-error: true
+        env:
+          BADGE: ${{ steps.create_badge_dir.outputs.path }}
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add "${BADGE}"
+          git commit -m "Add/Update badge"
+
+      - name: Push badge commit
+        uses: ad-m/github-push-action@master
+        if: ${{ success() }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: master
