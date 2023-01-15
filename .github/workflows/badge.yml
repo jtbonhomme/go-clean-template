@@ -1,8 +1,11 @@
 name: "Create badge"
 on:
-  push:
-    branches:
-    - 'master'
+  pull_request:
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
 
 jobs:
   badges:
@@ -16,11 +19,16 @@ jobs:
 
       - name: Checkout master
         uses: actions/checkout@v3
-        with:
-          ref: 'refs/heads/master'
 
-      - name: Make tests on master
-        id: make_test_master
+      - name: Extract branch name
+        id: extract_branch
+        shell: bash
+        run: |
+          echo "branch=${GITHUB_REF#refs/heads/}"
+          echo "branch=${GITHUB_REF#refs/heads/}" >> "${GITHUB_OUTPUT}"
+
+      - name: Make tests
+        id: make_test
         run: |
           make test
           coverage=`go tool cover -func=coverage.out | grep total | grep -Eo '[0-9]+\.[0-9]+'`
@@ -34,7 +42,7 @@ jobs:
           echo "lines=${COVERAGE}"
           echo "lines=${COVERAGE}" >> "${GITHUB_OUTPUT}"
         env:
-          COVERAGE: ${{ steps.make_test_master.outputs.coverage }}
+          COVERAGE: ${{ steps.make_test.outputs.coverage }}
 
       # Create the directory where badges will be saved, if needed
       - name: Create destination directory
@@ -79,4 +87,4 @@ jobs:
         if: ${{ success() }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: master
+          branch: ${{ steps.extract_branch.outputs.branch }}

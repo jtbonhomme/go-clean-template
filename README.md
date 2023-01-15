@@ -76,3 +76,4 @@ Dummy demonstration http server.
 * [ ] Fix auto tag (no actual analyse of PRs)
 * [ ] Fix changelog (fix are uncategorized)
 * [ ] Create and commit SVG badge in master branch
+* [ ] Pass tests coverage as artifact between test and badge
