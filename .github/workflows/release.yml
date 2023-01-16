@@ -17,7 +17,7 @@ jobs:
 
       - name: Semantic Release
         id: semantic_release
-        uses: cycjimmy/semantic-release-action@v3
+        uses: cycjimmy/semantic-release-action@v3.2.0
         #with:
         #  semantic_version: 19.0.5
         env:
