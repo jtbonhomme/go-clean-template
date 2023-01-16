@@ -68,7 +68,6 @@ jobs:
         with:
           name: code-coverage-report
           path: ./coverage.out
-          github-token: ${{ secrets.GITHUB_TOKEN }}
 
   checks:
     if: github.event_name == 'pull_request'
