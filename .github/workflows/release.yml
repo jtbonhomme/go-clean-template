@@ -49,6 +49,7 @@ jobs:
         run: |
           echo "TAG_REF=refs/tags/${{ needs.bump-tag.outputs.tag }}"
           echo "TAG_REF=refs/tags/${{ needs.bump-tag.outputs.tag }}" >> $GITHUB_ENV
+          echo "github.event: ${{ github.event }}"
 
       - name: "Checkout"
         if:  env.TAG_REF != null
