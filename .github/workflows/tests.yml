@@ -58,7 +58,7 @@ jobs:
 
       # This steps adds a comment on PR with code coverage calculated after tests in PR branch.
       - name: Coverage Reporter on Pull Request
-        uses: romeovs/lcov-reporter-action@v0.2.16
+        uses: romeovs/lcov-reporter-action@v0.3.1
         with:
           lcov-file: ./coverage.lcov
           github-token: ${{ secrets.GITHUB_TOKEN }}
