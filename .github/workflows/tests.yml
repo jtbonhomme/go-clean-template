@@ -58,10 +58,18 @@ jobs:
           echo "coverage=$coverage"
           echo "coverage=$coverage" >> $GITHUB_OUTPUT
 
+      # This steps adds a comment on PR with code coverage calculated after tests in PR branch.
       - name: Coverage Reporter on Pull Request
         uses: romeovs/lcov-reporter-action@v0.2.16
         with:
           lcov-file: ./coverage.lcov
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-coverage-report
+          path: ./coverage.out
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
   checks:

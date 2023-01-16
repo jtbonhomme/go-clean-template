@@ -69,12 +69,16 @@ Dummy demonstration http server.
 * [Code coverage](https://github.com/romeovs/lcov-reporter-action)
 * [Changelog builder](https://github.com/mikepenz/release-changelog-builder-action)
 * [Create GH release](https://github.com/softprops/action-gh-release)
+* [Github badge action](emibcn/badge-action)
 * [Github Push Action](https://github.com/ad-m/github-push-action)
+* [PR title check](satvik-s/pr-title-check@)
+* [GolangCI-lint action](reviewdog/action-golangci-lint) and [Yamllint action](reviewdog/action-yamllint)
 
 ### To Do
 
 * [X] Automatic tag + GH release
 * [X] Fix auto tag (no actual analyse of PRs)
-* [ ] Fix changelog (fix are uncategorized)
+* [X] Fix changelog (fix are uncategorized)
 * [X] Create and commit SVG badge in pushed branch
 * [ ] Pass tests coverage as artifact between test and badge
+* [ ] Create pre-releases / drafts by default
