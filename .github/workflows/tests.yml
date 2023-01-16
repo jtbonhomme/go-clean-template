@@ -6,13 +6,11 @@ on:
       - edited
       - reopened
       - synchronize
-  push:
-    branches:
-    - 'master'
 
 jobs:
   master-tests:
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
     outputs:
       coverage: ${{ steps.make_test_master.outputs.coverage }}
     steps:
