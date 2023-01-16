@@ -63,12 +63,6 @@ jobs:
           lcov-file: ./coverage.lcov
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Archive code coverage results
-        uses: actions/upload-artifact@v3
-        with:
-          name: code-coverage-report
-          path: ./coverage.out
-
   checks:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest

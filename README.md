@@ -80,5 +80,4 @@ Dummy demonstration http server.
 * [X] Fix auto tag (no actual analyse of PRs)
 * [X] Fix changelog (fix are uncategorized)
 * [X] Create and commit SVG badge in pushed branch
-* [ ] Pass tests coverage as artifact between test and badge
 * [ ] Create pre-releases / drafts by default
