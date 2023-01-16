@@ -74,7 +74,7 @@ Dummy demonstration http server.
 ### To Do
 
 * [X] Automatic tag + GH release
-* [ ] Fix auto tag (no actual analyse of PRs)
+* [X] Fix auto tag (no actual analyse of PRs)
 * [ ] Fix changelog (fix are uncategorized)
 * [X] Create and commit SVG badge in pushed branch
 * [ ] Pass tests coverage as artifact between test and badge
