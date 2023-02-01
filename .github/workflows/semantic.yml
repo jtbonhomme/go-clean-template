@@ -45,7 +45,7 @@ jobs:
         #uses: action-runner/conventional-labeler@v1
         #with:
         #  access_token: ${{ secrets.GITHUB_TOKEN }}
-        uses: Bhacaz/label-regex@v1
+        uses: Bhacaz/label-regex@v2
         with:
           field: title
           regex: '(fix|feat|chore|doc|docs|style|refactor|perf|test):'
