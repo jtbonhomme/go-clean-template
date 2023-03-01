@@ -8,29 +8,6 @@ on:
       - synchronize
 
 jobs:
-  check_pr_semantic:
-    name: Check PR title semantic
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check PR semantic
-        id: check_pr_semantic
-        uses: amannn/action-semantic-pull-request@v5
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          # Configure which types are allowed (newline delimited).
-          # Default: https://github.com/commitizen/conventional-commit-types
-          types: |
-            fix
-            feat
-            doc
-            docs
-            test
-            chore
-            style
-            refactor
-            perf
-
   check-commit-message:
     name: Check Commit Message
     runs-on: ubuntu-latest
@@ -38,19 +15,4 @@ jobs:
       - name: PR Title Verify
         uses: satvik-s/pr-title-check@1.1.0
         with:
-          pattern: '(fix|feat|chore|doc|docs|style|refactor|perf|test): (?:\w+\b\W*){2,8}$'
-
-      - name: Assign label to Pull Request
-        id: label
-        #uses: action-runner/conventional-labeler@v1
-        #with:
-        #  access_token: ${{ secrets.GITHUB_TOKEN }}
-        uses: Bhacaz/label-regex@v1
-        with:
-          field: title
-          regex: '(fix|feat|chore|doc|docs|style|refactor|perf|test):'
-          lowercase: true
-          token: ${{ secrets.GH_TOKEN }}
-      - name: Get the label output
-        run: echo "The labels were ${{ steps.label.outputs.labels }}"
-
+          pattern: '(fix|feat|chore|doc|style|refactor|perf|test): (?:\w+\b\W*){2,8}$'

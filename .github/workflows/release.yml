@@ -15,6 +15,13 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Check Skip directive
+        id: check_skip
+        run: |
+          grep -q "SKIP-TAG" <<< "${{ github.event.head_commit.message }}"
+          SKIP=$?
+          echo "skip=${SKIP}" >> "${GITHUB_OUTPUT}"
+
       - name: Semantic Release
         id: create_version_and_push_tag
         uses: cycjimmy/semantic-release-action@v3.2.0
@@ -22,7 +29,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Do something when a new release published
-        if: steps.semantic_release.outputs.new_release_published == 'true'
         run: |
           echo ${{ steps.create_version_and_push_tag.outputs.new_release_version }}
           echo ${{ steps.create_version_and_push_tag.outputs.new_release_major_version }}
