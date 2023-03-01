@@ -2,7 +2,6 @@
     "semantic_version": "19.0.5",
     "plugins": [
       "@semantic-release/commit-analyzer",
-      "@conventional-changelog/conventional-changelog",
       [
         "@semantic-release/release-notes-generator",
         {
