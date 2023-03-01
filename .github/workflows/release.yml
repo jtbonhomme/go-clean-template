@@ -15,12 +15,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Check Skip directive
-        id: check_skip
-        run: |
-          grep -q "SKIP-TAG" <<< "${{ github.event.head_commit.message }}"
-          SKIP=$?
-          echo "skip=${SKIP}" >> "${GITHUB_OUTPUT}"
+      #- name: Check Skip directive
+      #  id: check_skip
+      #  run: |
+      #    grep -q "SKIP-TAG" <<< "${{ github.event.head_commit.message }}"
+      #    SKIP=$?
+      #    echo "skip=${SKIP}" >> "${GITHUB_OUTPUT}"
 
       - name: Semantic Release
         id: create_version_and_push_tag
