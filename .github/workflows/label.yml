@@ -17,8 +17,8 @@ jobs:
       - uses: actions-ecosystem/action-regex-match@v2
         id: regex-match
         with:
-          text: ${{ github.event.head_commit.body }}
-          regex: '^/label\s*(.*?)\s*$'
+          text: ${{ github.event.head_commit.message }}
+          regex: '^.*/label\s*(.*?)\s.*$'
 
       - uses: actions-ecosystem/action-add-labels@v1
         if: ${{ steps.regex-match.outputs.match != '' }}
