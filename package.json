@@ -1,0 +1,11 @@
+{
+    "author": "Jean-Thierry Bonhomme <jtbonhomme@gmail.com>",
+    "dependencies": {},
+    "devDependencies": {
+      "@semantic-release/commit-analyzer": "^9.0.1",
+      "@semantic-release/github": "^8.0.7",
+      "@semantic-release/release-notes-generator": "^10.0.3",
+      "semantic-release": "^20.1.1"
+    },
+    "description": "Configuration for semantic-release, extends experience for publishing to NPM & Github: generates release-notes, changelog, publishes new version with Github actions."
+}
