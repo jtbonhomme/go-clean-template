@@ -4,6 +4,9 @@ on:
     branches:
     - 'master'
 
+env:
+  SKIP-TAG: "(SKIP-RELEASE)"
+
 jobs:
   bump-tag:
     runs-on: ubuntu-latest
@@ -15,12 +18,15 @@ jobs:
         with:
           fetch-depth: 0
 
-      #- name: Check Skip directive
-      #  id: check_skip
-      #  run: |
-      #    grep -q "SKIP-TAG" <<< "${{ github.event.head_commit.message }}"
-      #    SKIP=$?
-      #    echo "skip=${SKIP}" >> "${GITHUB_OUTPUT}"
+      - name: Check Skip directive
+        id: check_skip
+        run: |
+          grep -q "${SKIP-TAG}" <<< "${{ github.event.head_commit.message }}"
+          SKIP=$?
+          echo "SKIP="${SKIP-TAG}"
+          echo "message=${{ github.event.head_commit.message }}"
+          echo "skip=${SKIP}"
+          echo "skip=${SKIP}" >> "${GITHUB_OUTPUT}"
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
