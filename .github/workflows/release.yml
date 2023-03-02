@@ -32,7 +32,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Release
-        if: ${{ steps.regex-match.outputs.match != '' }}
+        if: ${{ steps.regex-match.outputs.match == '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
