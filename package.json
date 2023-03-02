@@ -2,7 +2,7 @@
     "author": "Jean-Thierry Bonhomme <jtbonhomme@gmail.com>",
     "dependencies": {},
     "devDependencies": {
-      "conventional-changelog/conventional-changelog":"^conventional-changelog-conventionalcommits-v5.0.0",
+      "conventional-changelog-conventionalcommits":"^5.0.0",
       "@semantic-release/commit-analyzer": "^9.0.1",
       "@semantic-release/github": "^8.0.7",
       "@semantic-release/release-notes-generator": "^10.0.3",
