@@ -1,15 +1,11 @@
 name: "Create Label"
 on:
-  pull_request:
-    types:
-      - opened
-      - edited
-      - reopened
-      - synchronize
+  issue_comment:                                     
+    types: [created, edited, deleted]
 
 jobs:
   check-commit-message:
-    name: Check Commit Message
+    name: Create label from comment
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
