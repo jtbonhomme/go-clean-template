@@ -22,20 +22,16 @@ jobs:
       #    SKIP=$?
       #    echo "skip=${SKIP}" >> "${GITHUB_OUTPUT}"
 
-      - name: Semantic Release
-        id: create_version_and_push_tag
-        uses: cycjimmy/semantic-release-action@v3.2.0
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "lts/*"
+      - name: Install dependencies
+        run: npm ci
+      - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Do something when a new release published
-        run: |
-          echo ${{ steps.create_version_and_push_tag.outputs.new_release_version }}
-          echo ${{ steps.create_version_and_push_tag.outputs.new_release_major_version }}
-          echo ${{ steps.create_version_and_push_tag.outputs.new_release_minor_version }}
-          echo ${{ steps.create_version_and_push_tag.outputs.new_release_patch_version }}
-          echo "tag=${{ steps.create_version_and_push_tag.outputs.new_release_version }}" >> $GITHUB_OUTPUT
-          echo "github.event: ${{ github.event }}"
+        run: npx semantic-release
 
       #- name: "Create latest tag"
       #  id: create_latest_tag
