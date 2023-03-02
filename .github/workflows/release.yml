@@ -19,14 +19,11 @@ jobs:
           fetch-depth: 0
 
       - name: Check Skip directive
-        id: check_skip
-        run: |
-          grep -q "${SKIP-TAG}" <<< "${{ github.event.head_commit.message }}"
-          SKIP=$?
-          echo "SKIP="${SKIP-TAG}"
-          echo "message=${{ github.event.head_commit.message }}"
-          echo "skip=${SKIP}"
-          echo "skip=${SKIP}" >> "${GITHUB_OUTPUT}"
+        uses: actions-ecosystem/action-regex-match@v2
+        id: regex-match
+        with:
+          text: ${{ github.event.head_commit.message }}
+          regex: '^.*\(SKIP-RELEASE\)$'
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -35,6 +32,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Release
+        if: ${{ steps.regex-match.outputs.match != '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
