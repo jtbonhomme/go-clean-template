@@ -13,7 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Dump steps context
-        run: echo '${{ toJSON(github.event.pull_request.message) }}'
+        run: |
+          echo '${{ toJSON(github.event.pull_request) }}'
+          echo '${{ github.event.pull_request}}'
       - name: PR Title Verify
         uses: satvik-s/pr-title-check@1.1.0
         with:
