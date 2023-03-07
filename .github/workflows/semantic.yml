@@ -12,8 +12,23 @@ jobs:
     name: Check Commit Message
     runs-on: ubuntu-latest
     steps:
+      - name: Dump steps context
+        run: |
+          echo '${{ toJSON(github.event.pull_request) }}'
+          echo '${{ github.event.pull_request}}'
       - name: PR Title Verify
         uses: satvik-s/pr-title-check@1.1.0
         with:
-          #pattern: '^(fix|feat|chore|doc|style|refactor|perf|revert|test): (?:\w+\b\W*){2,8}$'
-          pattern: '^((fix|feat|refactor)(\(\w\))?: (\w+\s){2,8}(\[[A-Z]{2,3}-[0-9]*\]))|((revert|chore|doc|style|perf|test)(\(\w\))?: ([\w ()-]+)(\[[A-Z]{2,3}-[0-9]*\])?( \(SKIP-RELEASE\))?)$'
+          pattern: '^(fix|feat|chore|doc|style|refactor|perf|revert|test)(\(\w\))?: .*$'
+      - name: Check Body
+        id: check-body
+        uses: actions-ecosystem/action-regex-match@v2
+        with:
+          text: ${{ github.event.pull_request.body }}
+          regex: '^.*(TEST).*$'
+      - name: Comment
+        if: ${{ steps.check-body.outputs.match == '' }}
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            This is a test ! :wave:
