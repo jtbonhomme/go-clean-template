@@ -18,7 +18,7 @@ jobs:
         id: regex-match
         with:
           text: ${{ github.event.pull_request.body }}
-          regex: '^.*/label\s*(.*?)\s.*$'
+          regex: '^.*\/label\s(.*)\s.*$'
 
       - name: Dump match
         run: |
