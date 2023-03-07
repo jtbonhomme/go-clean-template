@@ -15,7 +15,7 @@ jobs:
       - name: PR Title Verify
         uses: satvik-s/pr-title-check@1.1.0
         with:
-          pattern: '^(feat|chore|doc|fix|security|refactor|test|wip):[ ]?[A-Z0-9]+-[0-9]+.{3,}$'
+          pattern: '^(feat|chore|doc|fix|security|refactor|test|wip):[ ]?.{3,}$'
 
       - name: Check Body
         id: check-body
