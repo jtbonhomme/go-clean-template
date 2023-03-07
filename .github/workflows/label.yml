@@ -20,8 +20,12 @@ jobs:
           text: ${{ github.event.pull_request.body }}
           regex: '^.*/label\s*(.*?)\s.*$'
 
+      - name: Dump match
+        run: |
+          echo '${{ steps.regex-match.outputs.match }}'
+
       - uses: actions-ecosystem/action-add-labels@v1
-        if: ${{ steps.regex-match.outputs.match == '' }}
+        if: ${{ steps.regex-match.outputs.match != '' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           labels: ${{ steps.regex-match.outputs.group1 }}
