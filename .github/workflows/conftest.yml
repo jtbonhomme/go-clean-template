@@ -22,7 +22,6 @@ jobs:
         added: 'true'
         deleted: 'false'
         modified: 'true'
-      id: objects
 
     - name: Dump modified
       run: |
@@ -36,7 +35,6 @@ jobs:
 #        files: ${{ steps.objects.outputs.changed }}
         matches: '**/*.tfvars'
         policy: 'policy'
-      id: conftest
  
     - name: Post conftest command result to GitHub comment
       uses: b4b4r07/action-github-comment@master
