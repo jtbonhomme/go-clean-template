@@ -33,7 +33,8 @@ jobs:
 #      if: steps.objects.outputs.changed
       with:
 #        files: ${{ steps.objects.outputs.changed }}
-        matches: '**/*.tfvars'
+        files: '**/*.tfvars'
+#        matches: '**/*.tfvars'
         policy: 'policy'
  
     - name: Post conftest command result to GitHub comment
