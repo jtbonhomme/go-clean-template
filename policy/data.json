@@ -1,0 +1,17 @@
+{
+    "EnvArray": [
+        "dev",
+        "staging",
+        "bench",
+        "prod"
+    ],
+    "OwnersArray": [
+        "platform",
+        "dataengineers",
+        "dataengineering",
+        "app",
+        "qa",
+        "datascientists",
+        "datacollection"
+    ]
+}
