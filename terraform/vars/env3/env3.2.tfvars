@@ -1,2 +1,2 @@
-env = "wrong_env"
-owners = "wrong_owners"
+env = "dev"
+owners = "app"
