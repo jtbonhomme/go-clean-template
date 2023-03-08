@@ -1,0 +1,52 @@
+name: "Conftest"
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
+
+jobs:
+  run-conftest:
+    name: Run conftest
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Get changed objects
+      uses: b4b4r07/action-changed-objects@master
+      id: objects
+      with:
+        added: 'true'
+        deleted: 'false'
+        modified: 'true'
+      id: objects
+
+    - name: Dump modified
+      run: |
+        echo '${{ steps.objects.outputs.changed }}'
+
+    - name: Run conftest test against changed files
+      uses: b4b4r07/action-conftest@master
+      id: conftest
+      if: steps.objects.outputs.changed
+      with:
+#        files: ${{ steps.objects.outputs.changed }}
+        matches: '**/*.tfvars'
+        policy: 'policy'
+      id: conftest
+ 
+    - name: Post conftest command result to GitHub comment
+      uses: b4b4r07/action-github-comment@master
+      if: always() && steps.conftest.outputs.result
+      with:
+        body: |
+          ## conftest test result
+          ```
+          ${{ steps.conftest.outputs.result }}
+          ```
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        LOG: trace
