@@ -17,6 +17,7 @@ jobs:
 
     - name: Get changed objects
       uses: b4b4r07/action-changed-objects@master
+      id: objects
       with:
         added: 'true'
         deleted: 'false'
@@ -29,11 +30,12 @@ jobs:
 
     - name: Run conftest test against changed files
       uses: b4b4r07/action-conftest@master
+      id: conftest
       if: steps.objects.outputs.changed
       with:
 #        files: ${{ steps.objects.outputs.changed }}
         matches: '**/*.tfvars'
-        policy: 'policy/env.rego'
+        policy: 'policy'
       id: conftest
  
     - name: Post conftest command result to GitHub comment
@@ -43,7 +45,6 @@ jobs:
         body: |
           ## conftest test result
           ```
-          ${{ steps.objects.outputs.changed }}
           ${{ steps.conftest.outputs.result }}
           ```
       env:
