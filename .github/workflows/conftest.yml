@@ -30,7 +30,7 @@ jobs:
     - name: Run conftest test against changed files
       uses: b4b4r07/action-conftest@master
       id: conftest
-      if: steps.objects.outputs.changed
+#      if: steps.objects.outputs.changed
       with:
 #        files: ${{ steps.objects.outputs.changed }}
         matches: '**/*.tfvars'
