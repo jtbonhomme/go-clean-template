@@ -15,25 +15,19 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    #- name: Get changed objects
-    #  uses: b4b4r07/action-changed-objects@master
-    #  id: objects
-    #  with:
-    #    added: 'true'
-    #    deleted: 'false'
-    #    modified: 'true'
-
-    #- name: Dump modified
-    #  run: |
-    #    echo '${{ steps.objects.outputs.changed }}'
+    - name: Find tfvars
+      id: find_tfvars
+      run: |
+        tfvars=$(find . -name '*.tfvars')
+        echo "tfvars=$tfvars"
+        echo "tfvars=$tfvars" >> $GITHUB_OUTPUT
 
     - name: Run conftest test against changed files
       uses: b4b4r07/action-conftest@master
       id: conftest
-#      if: steps.objects.outputs.changed
+#      if: steps.find_tfvars.outputs.tfvars
       with:
-#        files: ${{ steps.objects.outputs.changed }}
-        files: '**/*.tfvars'
+        files: ${{ steps.find_tfvars.outputs.tfvars }}
 #        matches: '**/*.tfvars'
         policy: 'policy'
  
