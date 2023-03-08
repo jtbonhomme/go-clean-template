@@ -15,17 +15,17 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Get changed objects
-      uses: b4b4r07/action-changed-objects@master
-      id: objects
-      with:
-        added: 'true'
-        deleted: 'false'
-        modified: 'true'
+    #- name: Get changed objects
+    #  uses: b4b4r07/action-changed-objects@master
+    #  id: objects
+    #  with:
+    #    added: 'true'
+    #    deleted: 'false'
+    #    modified: 'true'
 
-    - name: Dump modified
-      run: |
-        echo '${{ steps.objects.outputs.changed }}'
+    #- name: Dump modified
+    #  run: |
+    #    echo '${{ steps.objects.outputs.changed }}'
 
     - name: Run conftest test against changed files
       uses: b4b4r07/action-conftest@master
