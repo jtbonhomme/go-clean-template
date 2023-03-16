@@ -15,7 +15,7 @@ jobs:
       coverage: ${{ steps.make_test_master.outputs.coverage }}
     steps:
       - name: Setup Go 1.19
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version: 1.19.x
 
@@ -39,7 +39,7 @@ jobs:
       coverage: ${{ steps.make_test_branch.outputs.coverage }}
     steps:
       - name: Setup Go 1.19
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version: 1.19.x
 
