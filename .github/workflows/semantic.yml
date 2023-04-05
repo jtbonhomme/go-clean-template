@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: PR Title Verify
-        uses: satvik-s/pr-title-check@1.1.0
+        uses: satvik-s/pr-title-check@1.1.1
         with:
           pattern: '^(feat|chore|doc|fix|security|refactor|test|wip):[ ]?.{3,}$'
 
